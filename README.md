@@ -1,4 +1,4 @@
-# react-native-snap-carousel
+# react-native-snap-carousel-tabs
 Swiper component for React Native featuring **previews**, **multiple layouts**, **parallax images**, **performant handling of huge numbers of items**, and **RTL support**. Compatible with Android & iOS.
 
 ![platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-brightgreen.svg?style=flat-square&colorB=191A17)
@@ -7,7 +7,6 @@ Swiper component for React Native featuring **previews**, **multiple layouts**, 
 <!-- [![github release](https://img.shields.io/github/release/hadimostafapour/react-native-snap-carousel-tabs.svg?style=flat-square)](https://github.com/hadimostafapour/react-native-snap-carousel-tabs/releases) -->
 [![github issues](https://img.shields.io/github/issues/hadimostafapour/react-native-snap-carousel-tabs.svg?style=flat-square)](https://github.com/hadimostafapour/react-native-snap-carousel-tabs/issues)
 [![github closed issues](https://img.shields.io/github/issues-closed/hadimostafapour/react-native-snap-carousel-tabs.svg?style=flat-square&colorB=44cc11)](https://github.com/hadimostafapour/react-native-snap-carousel-tabs/issues?q=is%3Aissue+is%3Aclosed)
-[![Issue Stats](https://img.shields.io/issuestats/i/github/hadimostafapour/react-native-snap-carousel-tabs.svg?style=flat-square&colorB=44cc11)](http://github.com/hadimostafapour/react-native-snap-carousel-tabs/issues)
 
 -----
 
@@ -79,6 +78,9 @@ In addition I just added tabs support.
 {
   layoutDirection="rtl"
   renderTabs={true}
+  underlineStyle={{backgroundColor: 'red'}},
+  tabStyle={{backgroundColor: '#FFF'}}
+  textStyle={{fontFamily: 'Arial'}}
   tabs={[
       {title: 'First' },
       {title: 'Second' },

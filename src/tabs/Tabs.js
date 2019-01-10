@@ -1,15 +1,13 @@
 import React, {PureComponent} from 'react';
 import {I18nManager, Platform, View, ViewPropTypes, Dimensions, Text, Animated} from 'react-native';
 import PropTypes from 'prop-types';
-import TabItem from './TabItem';
 import styles from './Tabs.style';
 import Button from './Button';
 
-const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
+let {width: viewportWidth} = Dimensions.get('window');
 
 
 const IS_IOS = Platform.OS === 'ios';
-let IS_RTL = I18nManager.isRTL;
 
 export default class Tabs extends PureComponent {
 
@@ -49,20 +47,20 @@ export default class Tabs extends PureComponent {
         // Warnings
         if ((props.dotColor && !props.inactiveDotColor) || (!props.dotColor && props.inactiveDotColor)) {
             console.warn(
-                'react-native-snap-carousel | Pagination: ' +
-                'You need to specify both `dotColor` and `inactiveDotColor`'
+              'react-native-snap-carousel | Pagination: ' +
+              'You need to specify both `dotColor` and `inactiveDotColor`'
             );
         }
         if ((props.dotElement && !props.inactiveDotElement) || (!props.dotElement && props.inactiveDotElement)) {
             console.warn(
-                'react-native-snap-carousel | Pagination: ' +
-                'You need to specify both `dotElement` and `inactiveDotElement`'
+              'react-native-snap-carousel | Pagination: ' +
+              'You need to specify both `dotElement` and `inactiveDotElement`'
             );
         }
         if (props.tappableDots && !props.carouselRef) {
             console.warn(
-                'react-native-snap-carousel | Pagination: ' +
-                'You must specify prop `carouselRef` when setting `tappableDots` to `true`'
+              'react-native-snap-carousel | Pagination: ' +
+              'You must specify prop `carouselRef` when setting `tappableDots` to `true`'
             );
         }
     }
@@ -83,12 +81,12 @@ export default class Tabs extends PureComponent {
         const fontWeight = isTabActive ? 'bold' : 'normal';
 
         return <Button
-            style={{flex: 1,}}
-            key={name}
-            accessible={true}
-            accessibilityLabel={name}
-            accessibilityTraits='button'
-            onPress={() => this.props.snapToItem(page, true, true)}
+          style={{flex: 1,}}
+          key={name}
+          accessible={true}
+          accessibilityLabel={name}
+          accessibilityTraits='button'
+          onPress={() => this.props.snapToItem(page, true, true)}
         >
             <View style={[styles.tab, this.props.tabStyle,]}>
                 <Text style={[{color: textColor, fontWeight,}, textStyle, {}]}>
@@ -143,7 +141,7 @@ export default class Tabs extends PureComponent {
 
         const tabUnderlineStyle = {
             position: 'absolute',
-            width: viewportWidth / this.props.tabs.length,
+            width: (this.props.width || viewportWidth) / this.props.tabs.length,
             height: 4,
             backgroundColor: 'navy',
             bottom: 0,
@@ -177,21 +175,21 @@ export default class Tabs extends PureComponent {
         ];
 
         return (
-            <View pointerEvents={'box-none'} style={style}>
-                {this.tabs}
+          <View pointerEvents={'box-none'} style={style}>
+              {this.tabs}
 
-                <Animated.View
-                    style={[
-                        tabUnderlineStyle,
-                        {
-                            transform: [
-                                {translateX},
-                            ]
-                        },
-                        this.props.underlineStyle,
-                    ]}
-                />
-            </View>
+              <Animated.View
+                style={[
+                    tabUnderlineStyle,
+                    {
+                        transform: [
+                            {translateX},
+                        ]
+                    },
+                    this.props.underlineStyle,
+                ]}
+              />
+          </View>
         );
     }
 }
