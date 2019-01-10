@@ -61,6 +61,7 @@ export default class Carousel extends Component {
         lockScrollWhileSnapping: PropTypes.bool,
         loop: PropTypes.bool,
         loopClonesPerSide: PropTypes.number,
+        scrollEnabled: PropTypes.bool,
         scrollInterpolator: PropTypes.func,
         slideInterpolatedStyle: PropTypes.func,
         slideStyle: ViewPropTypes ? ViewPropTypes.style : View.propTypes.style,
@@ -97,6 +98,7 @@ export default class Carousel extends Component {
         lockScrollWhileSnapping: false,
         loop: false,
         loopClonesPerSide: 3,
+        scrollEnabled: true,
         slideStyle: {},
         shouldOptimizeUpdates: true,
         swipeThreshold: 20,
@@ -128,7 +130,7 @@ export default class Carousel extends Component {
         this._scrollOffsetRef = null;
         this._onScrollTriggered = true; // used when momentum is enabled to prevent an issue with edges items
         this._lastScrollDate = 0; // used to work around a FlatList bug
-        this._scrollEnabled = props.scrollEnabled === false ? false : true;
+        this._scrollEnabled = props.scrollEnabled !== false;
 
         this._initPositionsAndInterpolators = this._initPositionsAndInterpolators.bind(this);
         this._renderItem = this._renderItem.bind(this);
@@ -312,13 +314,13 @@ export default class Carousel extends Component {
     }
 
     _canLockScroll () {
-        const { enableMomentum, lockScrollWhileSnapping } = this.props;
-        return !enableMomentum && lockScrollWhileSnapping;
+        const { scrollEnabled, enableMomentum, lockScrollWhileSnapping } = this.props;
+        return scrollEnabled && !enableMomentum && lockScrollWhileSnapping;
     }
 
     _enableLoop () {
         const { data, enableSnap, loop } = this.props;
-        return enableSnap && loop && data.length && data.length > 1;
+        return enableSnap && loop && data && data.length && data.length > 1;
     }
 
     _shouldAnimateSlides (props = this.props) {
@@ -352,9 +354,9 @@ export default class Carousel extends Component {
 
     _getCustomData (props = this.props) {
         const { data, loopClonesPerSide } = props;
-        const dataLength = data.length;
+        const dataLength = data && data.length;
 
-        if (!data || !dataLength) {
+        if (!dataLength) {
             return [];
         }
 
@@ -470,8 +472,7 @@ export default class Carousel extends Component {
         return this._scrollEnabled;
     }
 
-    _setScrollEnabled (value = true) {
-        const { scrollEnabled } = this.props;
+    _setScrollEnabled (scrollEnabled = true) {
         const wrappedRef = this._getWrappedRef();
 
         if (!wrappedRef || !wrappedRef.setNativeProps) {
@@ -480,8 +481,8 @@ export default class Carousel extends Component {
 
         // 'setNativeProps()' is used instead of 'setState()' because the latter
         // really takes a toll on Android behavior when momentum is disabled
-        wrappedRef.setNativeProps({ scrollEnabled: value });
-        this._scrollEnabled = value;
+        wrappedRef.setNativeProps({ scrollEnabled });
+        this._scrollEnabled = scrollEnabled;
     }
 
     _getKeyExtractor (item, index) {
@@ -567,7 +568,7 @@ export default class Carousel extends Component {
             };
 
             if (!this._shouldAnimateSlides(props)) {
-                animatedValue = 1;
+                animatedValue = new Animated.Value(1);
             } else if (this._shouldUseCustomAnimation()) {
                 animatedValue = new Animated.Value(_index === this._activeItem ? 1 : 0);
             } else {

@@ -1,4 +1,4 @@
-`import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Animated, Easing, TouchableOpacity, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './Tabs.style';
